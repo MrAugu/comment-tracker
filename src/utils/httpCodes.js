@@ -11,19 +11,14 @@ module.exports = {
     error: "Internal server error",
     message
   }),
-  "201": (message = "The resource was created.", code = 201) => ({
+  "200": (message = "Request fulfileld", code = 200) => ({
     statusCode: code,
-    error: "Request fulfileld",
+    error: null,
     message
   }),
-  "200": (message = "The request was handled succesfully.", code = 200) => ({
+  "DATA_200": (data = {}, message = "Request fulfileld", code = 200) => ({
     statusCode: code,
-    error: "Request fulfileld",
-    message
-  }),
-  "DATA_200": (message = "The resource was found.", data = {}, code = 200) => ({
-    statusCode: code,
-    error: "Request fulfileld",
+    error: null,
     message,
     data
   }),

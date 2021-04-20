@@ -22,6 +22,7 @@ fastify.crypto = new Crypt({
   key: process.env.KEY
 });
 const httpCodes = require("./utils/httpCodes");
+const jwt = require("jsonwebtoken");
 
 (async function () { 
   await fastify.register(require("fastify-cookie"));
@@ -37,7 +38,7 @@ const httpCodes = require("./utils/httpCodes");
 
   fastify.post("/signup", async (request, response) => {
     response.type("application/json");
-    if (!request.body || !request.body.username || !request.body.password) return response.code(400).send(httpCodes["400"]);
+    if (!request.body || !request.body.username || !request.body.password) return response.code(400).send(httpCodes["400"]());
     let user = await fastify.db.collections.users.findOne({
       username: request.body.username
     });
@@ -50,14 +51,50 @@ const httpCodes = require("./utils/httpCodes");
       bio: "I am a quite mysterious person."
     });
 
-    if (user.result && user.result.ok === 1) return response.code(201).send(httpCodes["201"]);
-    else return response.code(500).send(httpCodes["500"]("Database operaton failed."));
+    if (user.result && user.result.ok === 1) return response.code(201).send(httpCodes["201"]());
+    else return response.code(500).send(httpCodes["500"]("Database operation failed."));
   });
 
   fastify.get("/users", async (request, response) => {
     response.type("application/json");
     const users = await fastify.db.collections.users.find({}).toArray();
-    response.code(200).send(JSON.stringify(users, null, 4));
+    response.code(200).send(httpCodes["DATA_200"](users));
+  });
+
+
+  fastify.post("/login", async (request, response) => {
+    response.type("application/json");
+
+    if (request.cookies.token && !request.query.ignoreCookie) {
+      try {
+        const parsedToken = jwt.verify(request.cookies.token, process.env.KEY);
+        if (parsedToken.username && parsedToken.expires > Date.now()) return  response.code(200).send(httpCodes["DATA_200"]({
+          token: request.cookies.token
+        }, "Used token cookie."));
+      } catch (error) {
+        // eslint-disable-line no-empty
+      }
+    }
+
+    if (!request.body || !request.body.username || !request.body.password) return response.code(400).send(httpCodes["400"]());
+    const user = await fastify.db.collections.users.findOne({
+      username: request.body.username
+    });
+    if (!user) return response.code(400).send(httpCodes["400"]("The provided parameters are invalid."));
+
+    const newPasswordHash = fastify.crypto.hash(request.body.password);
+    if (newPasswordHash !== user.password) return response.code(400).send(httpCodes["400"]("The provided parameters are invalid."));
+
+    const token = jwt.sign({
+      username: user.username,
+      expires: (Date.now() + (1000 * 60 * 60 * 24 * 2))
+    }, process.env.KEY);
+
+    response.setCookie("token", token);
+
+    return response.code(200).send(httpCodes["DATA_200"]({
+      token
+    }));
   });
 
   fastify.db.connect().then(() => {
