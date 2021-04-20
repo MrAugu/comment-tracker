@@ -1,2 +1,2 @@
-# crunch
-A small application that I made to learn Fastify &amp; JWT and possibly React.
+# comment-tracker
+A small project by me to learn fastify while making a REST API.

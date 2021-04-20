@@ -1,0 +1,19 @@
+{
+  "name": "comment-tracker",
+  "version": "1.0.0",
+  "description": "A small project by me to learn fastify while making a REST API.",
+  "main": "src/app.js",
+  "scripts": {
+    "test": "node src/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MrAugu/comment-tracker.git"
+  },
+  "author": "MrAugu#7917 <mraugu@yahoo.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/MrAugu/comment-tracker/issues"
+  },
+  "homepage": "https://github.com/MrAugu/comment-tracker#readme"
+}
