@@ -1,4 +1,6 @@
-const { MongoClient, ObjectId, Db } = require("mongodb");
+"use strict";
+
+const { MongoClient, ObjectId, Db, Collection } = require("mongodb");
 const queryString = require("querystring");
 const DefaultConnectionOptions = {
   useNewUrlParser: true,
@@ -89,6 +91,18 @@ class DatabaseManager {
      * @type {boolean}
      */
     this.usePort = (options.usePort === null || options.usePort === undefined) ? true : options.usePort;
+
+    /**
+     * Property used to dynamically get collections by name.
+     * 
+     * @type {Collection}
+     */
+    this.collections = new Proxy({}, {
+      get: (target, property, receiver) => {
+        if (!this.db) throw new Error("Must be connected before accesing the collections.");
+        return this.db.collection(property);
+      }
+    });
   }
 
   /**
