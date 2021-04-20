@@ -34,8 +34,22 @@ const jwt = require("jsonwebtoken");
 
   fastify.get("/me", {
     preValidation: [fastify.authenticate]
-  }, async (request, response) => { // eslint-disable-line
-    return { "user": request.user.username };
+  }, async (request, response) => {
+    response.type("application/json");
+    const user = await fastify.db.collections.users.findOne({
+      username: request.user.username
+    });
+    if (!user) return response.code(500).send(httpCodes["500"]());
+
+    return response.code(200).send(httpCodes["DATA_200"](user));
+  });
+
+  fastify.get("/logout", {
+    preValidation: [fastify.authenticate]
+  }, async (request, response) => {
+    response.clearCookie("token");
+
+    return response.code(204).send();
   });
 
   fastify.post("/signup", async (request, response) => {
