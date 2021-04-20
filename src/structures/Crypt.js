@@ -1,3 +1,5 @@
+"use strict";
+
 const { createCipheriv, createDecipheriv, randomBytes, pbkdf2Sync } = require("crypto");
 
 /**

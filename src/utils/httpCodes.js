@@ -1,3 +1,5 @@
+"use strict";
+
 module.exports = {
   "400": (message = "The request body is invaid.", code = 400) => ({
     statusCode: code,
