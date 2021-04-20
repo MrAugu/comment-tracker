@@ -1,5 +1,4 @@
 "use strict";
-
 const fp = require("fastify-plugin");
 const httpCodes = require("../utils/httpCodes");
 const jwt = require("jsonwebtoken");

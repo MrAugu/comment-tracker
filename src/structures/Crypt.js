@@ -1,6 +1,10 @@
 "use strict";
-
-const { createCipheriv, createDecipheriv, randomBytes, pbkdf2Sync } = require("crypto");
+const {
+  createCipheriv,
+  createDecipheriv,
+  randomBytes,
+  pbkdf2Sync
+} = require("crypto");
 
 /**
  * Holds cryptographic utility functions.

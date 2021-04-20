@@ -1,5 +1,4 @@
 "use strict";
-
 const { MongoClient, ObjectId, Db, Collection } = require("mongodb"); // eslint-disable-line no-unused-vars
 const queryString = require("querystring");
 const DefaultConnectionOptions = {

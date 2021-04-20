@@ -11,7 +11,7 @@ module.exports = {
     error: "Internal server error",
     message
   }),
-  "200": (message = "Request fulfileld", code = 200) => ({
+  "200": (message = "Request fulfilled", code = 200) => ({
     statusCode: code,
     error: null,
     message
