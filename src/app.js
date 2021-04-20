@@ -32,8 +32,10 @@ const jwt = require("jsonwebtoken");
     response.type("application/json");
   });
 
-  fastify.get("/me", { preValidation: [fastify.authenticate] }, async (request, response) => { // eslint-disable-line
-    return { "hello": "yellow" };
+  fastify.get("/me", {
+    preValidation: [fastify.authenticate]
+  }, async (request, response) => { // eslint-disable-line
+    return { "user": request.user.username };
   });
 
   fastify.post("/signup", async (request, response) => {
@@ -51,7 +53,7 @@ const jwt = require("jsonwebtoken");
       bio: "I am a quite mysterious person."
     });
 
-    if (user.result && user.result.ok === 1) return response.code(201).send(httpCodes["201"]());
+    if (user.result && user.result.ok === 1) return response.code(201).send(httpCodes["200"](undefined, 201));
     else return response.code(500).send(httpCodes["500"]("Database operation failed."));
   });
 

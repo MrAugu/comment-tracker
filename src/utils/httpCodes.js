@@ -22,4 +22,9 @@ module.exports = {
     message,
     data
   }),
+  "401": (message = "You are not authorized.", code = 401) => ({
+    statusCode: code,
+    error: "Unauthorized",
+    message
+  })
 };
