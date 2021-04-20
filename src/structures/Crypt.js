@@ -1,4 +1,4 @@
-const { createCipheriv, createDecipheriv, randomBytes } = require("crypto");
+const { createCipheriv, createDecipheriv, randomBytes, pbkdf2Sync } = require("crypto");
 
 /**
  * Holds cryptographic utility functions.
@@ -21,6 +21,13 @@ class Crypt {
      * @type {string}
      */
     this.algorithm = options.algorithm || "aes-256-cbc";
+
+    /**
+     * The salt used for hashes.
+     * 
+     * @type {Buffer}
+     */
+    this.salt = this.key.subarray(0, 15);
   }
 
   /**
@@ -63,6 +70,16 @@ class Crypt {
     ]);
     
     return decrypted.toString();
+  }
+
+  /**
+   * Hashes a string with SHA512.
+   * 
+   * @param {string} string - String to be hashed.
+   * @returns {string} The hash. 
+   */
+  hash (string) {
+    return pbkdf2Sync(Buffer.from(string), this.salt, 100, 64, "sha512").toString("hex");
   }
 
   /**
