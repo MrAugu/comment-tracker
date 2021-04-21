@@ -15,7 +15,8 @@ const routes = async (fastify) => {
       password: fastify.crypto.hash(request.body.password),
       displayName: request.body.username.toLowerCase(),
       color: "red",
-      bio: "I am a quite mysterious person."
+      bio: "I am a quite mysterious person.",
+      createdTimestamp: Date.now()
     });
     
     if (user.result && user.result.ok === 1) return response.code(201).send(httpCodes["200"](undefined, 201));

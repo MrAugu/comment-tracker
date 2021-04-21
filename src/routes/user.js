@@ -3,14 +3,23 @@ const httpCodes = require("../utils/httpCodes");
 const validColors = [
   "red", "yellow", "orange",
   "green", "blue", "pink",
-  "purple", "black", "white"
+  "purple", "black", "white",
+  "gray", "aqua", "peach"
 ];
 const jwt = require("jsonwebtoken");
 
 const routes = async (fastify) => {
   fastify.get("/users", async (request, response) => {
     response.type("application/json");
-    const users = await fastify.db.collections.users.find({}).toArray();
+    let users = await fastify.db.collections.users.find({}).toArray();
+    users = users.map(user => ({
+      id: user._id,
+      username: user.username,
+      displayName: user.displayName,
+      color: user.color,
+      bio: user.bio,
+      createdTimestamp: user.createdTimestamp
+    }));
     response.code(200).send(httpCodes["DATA_200"](users));
   });
 
