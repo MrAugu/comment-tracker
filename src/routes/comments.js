@@ -12,7 +12,8 @@ const routes = async (fastify) => {
       edits: comment.edits.map(comment => ({
         editedAt: comment.editedAt,
         previousContent: fastify.crypto.decrypt(comment.previousContent)
-      }))
+      })),
+      createdTimestamp: comment.createdTimestamp
     }));
     return response.code(200).send(httpCodes["DATA_200"](comments));
   });
@@ -36,7 +37,8 @@ const routes = async (fastify) => {
       for: fastify.db.id(request.body.for),
       by: fastify.db.id(request.user.id),
       content: fastify.crypto.encrypt(request.body.content),
-      edits: []
+      edits: [],
+      createdTimestamp: Date.now()
     });
 
     if (inserted && inserted.result && inserted.result.ok === 1) return response.code(200).send(httpCodes["200"]());
