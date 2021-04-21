@@ -7,9 +7,9 @@ async function plugin (fastify, options) { // eslint-disable-line no-unused-vars
   fastify.decorate("authenticate", async function (request, response) { // eslint-disable-line no-unused-vars
     if (!request.cookies.token) return response.code(401).send(httpCodes["401"]());
     try {
-      const parsedToken = jwt.verify(request.cookies.token, process.env.KEY);
-      if (parsedToken.expires <= Date.now()) response.code(401).send(httpCodes["401"]("Token has expired."));
-      request.user = parsedToken;
+      const verifiedToken = jwt.verify(request.cookies.token, process.env.KEY);
+      if (verifiedToken.expires <= Date.now()) response.code(401).send(httpCodes["401"]("Token has expired."));
+      request.user = verifiedToken;
     } catch (e) {
       return response.code(401).send(httpCodes["401"]());
     }

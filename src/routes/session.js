@@ -47,7 +47,11 @@ const routes = async (fastify) => {
 
     const token = jwt.sign({
       username: user.username,
-      expires: (Date.now() + (1000 * 60 * 60 * 24 * 2))
+      expires: (Date.now() + (1000 * 60 * 60 * 24 * 2)),
+      id: user._id,
+      hash: user.password,
+      displayName: user.displayName,
+      color: user.color
     }, process.env.KEY);
 
     response.setCookie("token", token);
