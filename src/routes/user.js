@@ -27,6 +27,7 @@ const routes = async (fastify) => {
   fastify.get("/me", {
     preValidation: [fastify.authenticate]
   }, async (request, response) => {
+    response.header("Access-Control-Allow-Origin", "*");
     response.type("application/json");
     return response.code(200).send(httpCodes["DATA_200"]({
       username: request.user.username,
