@@ -15,7 +15,7 @@ async function plugin (fastify) {
       retryWrites: true,
       w: "majority"
     },
-    usePort: false
+    usePort: process.env.DB_USE_PORT === "TRUE"
   }));
 
   fastify.decorate("crypto", new Crypt({
