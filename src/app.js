@@ -9,6 +9,12 @@ require("dotenv").config({
 });
 
 (async function () {
+  fastify.addHook("onSend", (request, response, done) => {
+    response.header("Access-Control-Allow-Origin", process.env.ALLOW_ORIGIN);
+    response.header("Access-Control-Allow-Credentials", true);
+    done();
+  });
+
   await fastify.register(AutoLoad, {
     dir: join(__dirname, "plugins"),
     options: {}
