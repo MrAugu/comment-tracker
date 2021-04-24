@@ -111,9 +111,9 @@ class DatabaseManager {
    */
   connect () {
     return new Promise((resolve, reject) => {
-      if (this.db) resolve(true);
+      if (this.db) return resolve(true);
       MongoClient.connect(this.url, this.connectionOptions, (error, client) => {
-        if (error) reject(error);
+        if (error) return reject(error);
         this.client = client;
         this.db = client.db(this.name);
         resolve(client);
