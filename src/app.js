@@ -25,7 +25,7 @@ require("dotenv").config({
   });
 
   fastify.db.connect().then(() => {
-    fastify.listen(parseInt(process.env.PORT), "127.0.0.1", (error, address) => {
+    fastify.listen(parseInt(process.env.PORT), "0.0.0.0", (error, address) => {
       if (error) throw error;
       console.log(`Listening at ${address}.`);
     });

@@ -1,9 +1,9 @@
-version: "3"
+version: "3.2"
 services: 
   web:
     container_name: comment-tracker-node
     restart: always
-    build: .
+    image: mraugu/comment-tracker
     ports: 
       - "5000:5000"
     links:
@@ -14,4 +14,11 @@ services:
       container_name: mongodb
       image: mongo
       ports:
-      - "27017:27017"
+        - "27017:27017"
+      volumes:
+        - type: volume
+          source: mongodb_data_volume
+          target: /data/db
+volumes: 
+  mongodb_data_volume:
+    external: true
